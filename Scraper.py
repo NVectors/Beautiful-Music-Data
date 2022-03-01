@@ -1,4 +1,5 @@
 from decouple import config
+from numpy import extract
 import praw
 import pandas as pd
 
@@ -13,13 +14,23 @@ def get_comment(url):
     submission.comment_sort = 'top'
     submission.comment_limit = 10000
     submission.comments.replace_more(limit=0)
-    
+
     for comment in submission.comments:
         read_comment(comment)
 
 def read_comment(comment):
-    if hasattr(comment, 'body'):
-        print(comment.body)
+    if hasattr(comment, 'body') and hasattr(comment.author, 'name'):
+        parse_comment(comment)
+
+def parse_comment(comment):
+    #Split comment body by line breaks
+    seperated_string = comment.body.splitlines()
+
+    if len(seperated_string) == 1:
+        if "by" in seperated_string[0] or "-" in seperated_string[0]:
+            print(seperated_string, '\n', '-'*5)
+         
+        
 
 def main():
     # Obtain submission object
