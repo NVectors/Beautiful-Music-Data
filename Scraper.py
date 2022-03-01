@@ -1,3 +1,4 @@
+from os import sep
 from decouple import config
 from numpy import extract
 import praw
@@ -23,14 +24,30 @@ def read_comment(comment):
         parse_comment(comment)
 
 def parse_comment(comment):
-    #Split comment body by line breaks
-    seperated_string = comment.body.splitlines()
+    #Split comment body by line breaks into a list
+    split_comment = comment.body.splitlines()
 
-    if len(seperated_string) == 1:
-        if "by" in seperated_string[0] or "-" in seperated_string[0]:
-            print(seperated_string, '\n', '-'*5)
-         
-        
+    for line in split_comment:
+        #Ignore empty lines(' ') caused by splitlines()
+        if len(line) == 0:
+            break
+
+        if  (' by ' in line):
+            print(line, '\n', '-'*20)  
+
+        elif (' - ' in line):
+            print(line, '\n', '-'*20) 
+
+        #Need to figure out if ',' is used to seperate songs 
+        #elif (' , ' in line): 
+
+
+
+
+
+
+
+
 
 def main():
     # Obtain submission object
