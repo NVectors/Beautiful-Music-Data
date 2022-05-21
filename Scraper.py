@@ -22,7 +22,10 @@ def get_comment(url):
 
 def read_comment(comment):
     if hasattr(comment, 'body') and hasattr(comment.author, 'name'):
+        #create_cvs(comment)
         parse_comment(comment)
+        
+
 
 def parse_comment(comment):
     #Split comment body by line breaks into a list
@@ -33,7 +36,7 @@ def parse_comment(comment):
         if len(line) == 0:
             break
 
-        # Song title - Artist 
+        #Song title - Artist 
         if (' - ' in line) and not (' by ' in line):
             print(line,'\n', '-'*5)
 
@@ -44,31 +47,32 @@ def parse_comment(comment):
 
             artist = line[line.index('- ')+2:]
             if artist.endswith(('.')):
-                artist = artist[:artist.index('.')]
+                artist = artist[:artist.rindex('.')]
                 print(artist, '\n', '-'*20)
             else:
                 print(artist, '\n', '-'*20)
-                
 
-        #print(line,'\n', '-'*5)
-        #if  (' by ' in line) and not (',' in line):
+        # Song title by Artist
+        elif (' by ' in line) and not (' - ' in line):
+            print(line,'\n', '-'*5)
 
-        #    print(line,'\n', '-'*5)
+            if line.count(' by ') == 1:
+                song_title = line[:line.index(' by ')]
+                if ":" in song_title or "," in song_title:
+                    break
+            else:
+                song_title = line[:line.rindex(' by ')]
 
-            # song_title = line[:line.index(' by')]
-            # if ":" in song_title or "," in song_title:
-            #     break
+            if ":" in song_title or "," in song_title:
+                break
+            print(song_title, '\n', '-'*20)
 
-            # print(song_title, '\n', '-'*20)
-
-           
-
-        #elif (' - ' in line):
-        #    print(line, '\n', '-'*20) 
-
-        #Need to figure out if ',' is used to seperate songs 
-        #elif (' , ' in line): 
-
+            artist = line[line.index('by ')+3:]
+            if artist.endswith(('.')):
+                artist = artist[:artist.rindex('.')]
+                print(artist, '\n', '-'*20)
+            else:
+                print(artist, '\n', '-'*20)
 
 def main():
     # Obtain submission object
