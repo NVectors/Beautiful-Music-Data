@@ -1,5 +1,6 @@
 from os import sep
 from decouple import config
+from matplotlib import artist
 from numpy import extract
 import praw
 import pandas as pd
@@ -32,21 +33,41 @@ def parse_comment(comment):
         if len(line) == 0:
             break
 
-        if  (' by ' in line):
-            print(line, '\n', '-'*20)  
+        # Song title - Artist 
+        if (' - ' in line) and not (' by ' in line):
+            print(line,'\n', '-'*5)
 
-        elif (' - ' in line):
-            print(line, '\n', '-'*20) 
+            song_title = line[:line.index(' - ')]
+            if ":" in song_title or "," in song_title:
+                break
+            print(song_title, '\n', '-'*20)
+
+            artist = line[line.index('- ')+2:]
+            if artist.endswith(('.')):
+                artist = artist[:artist.index('.')]
+                print(artist, '\n', '-'*20)
+            else:
+                print(artist, '\n', '-'*20)
+                
+
+        #print(line,'\n', '-'*5)
+        #if  (' by ' in line) and not (',' in line):
+
+        #    print(line,'\n', '-'*5)
+
+            # song_title = line[:line.index(' by')]
+            # if ":" in song_title or "," in song_title:
+            #     break
+
+            # print(song_title, '\n', '-'*20)
+
+           
+
+        #elif (' - ' in line):
+        #    print(line, '\n', '-'*20) 
 
         #Need to figure out if ',' is used to seperate songs 
         #elif (' , ' in line): 
-
-
-
-
-
-
-
 
 
 def main():
